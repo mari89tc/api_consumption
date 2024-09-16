@@ -1,0 +1,93 @@
+@import "_variables.css";
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    overflow-x: hidden;
+    font-family: var(--fontMain);
+    background-color: var(--secondaryColor);
+    header, footer {
+        font-family: var(--fontHead);
+        color: var(--primaryColor);
+        h1, h2 {
+            background-color: var(--tertiaryColor);
+            padding: var(--marginMedium) var(--marginLarge);
+        }
+        h1, p{
+            text-align: center;
+        }
+    }
+    nav > ul {
+        padding: var(--marginMedium);
+        background-color: var(--primaryColor);
+        a {
+            text-decoration: none;
+            color: var(--secondaryColor);
+        }
+        a:hover {
+            text-decoration: underline var(--secondaryColor);
+        }
+        a:focus {
+            text-decoration: underline var(--secondaryColor);
+        }
+    }
+    #movieTemplate {
+        display: flex;
+        flex-direction: column;
+        gap: var(--marginLarge);
+        margin: var(--marginLarge);
+        header > h2 {
+            border-radius: var(--marginSmall) var(--marginSmall) 0 0 ;
+        }
+        article {
+            margin: auto;
+            max-width: 960px;
+            border-radius: var(--marginSmall);
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        }
+        .movieContent {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .movieImg {
+            width: 70%;
+            object-fit: cover;
+            align-self: center;
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+        .movieText {
+            padding: var(--marginMedium);
+            gap: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    @media (min-width: 650px){
+        nav > ul {
+            display: flex;
+            justify-content: space-evenly;
+        }
+        #movieTemplate  {
+            margin: var(--marginLarge);
+            .movieContent {
+                display: grid;
+                grid-template-columns: 1fr 2fr;
+            }
+            .movieImg {
+                border-radius: var(--marginSmall) 0 0 var(--marginSmall);
+                width: 70%;
+                object-fit: cover;
+                img {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+        }
+    }
+}

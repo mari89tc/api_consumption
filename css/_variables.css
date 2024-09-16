@@ -1,0 +1,12 @@
+:root {
+    --fontMain: Arial, Helvetica, sans-serif;
+    --fontHead: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+    --primaryColor: #181511;
+    --secondaryColor: #fffdef;
+    --tertiaryColor: #e2c44a;
+
+    --marginMedium: 1rem;
+    --marginSmall: 0.5rem;
+    --marginLarge: 1.5rem;
+}
