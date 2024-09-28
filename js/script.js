@@ -3,27 +3,51 @@
 const options = {
     method: 'GET',
     headers: {
-    accept: 'application/json',
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWU4ZTBmZjI1ZDIyYmNlZjQ3ZTg4OTZmNjQ0ODVjMiIsIm5iZiI6MTcyNjQ2OTcwMS4zMDM5MDUsInN1YiI6IjY2ZTZlZjE5ZDdiY2NhNTI0ZGIwOThkZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Gdz6G6bp9V87VN37oiW7hxUUWSj4IppS46_DnT8q0fc'
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWU4ZTBmZjI1ZDIyYmNlZjQ3ZTg4OTZmNjQ0ODVjMiIsIm5iZiI6MTcyNjQ2OTcwMS4zMDM5MDUsInN1YiI6IjY2ZTZlZjE5ZDdiY2NhNTI0ZGIwOThkZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Gdz6G6bp9V87VN37oiW7hxUUWSj4IppS46_DnT8q0fc'
     }
 };
 const baseUrl = "https://api.themoviedb.org/3/movie"
-const endPoint = "/now_playing";
-// Now playing: /now_playing?language=en-US&page=1
-// Popular: /popular?language=en-US&page=1
-// Top rated: /top_rated?language=en-US&page=1
-// Upcoming: /upcoming?language=en-US&page=1
+// Array with the different endpoints
+const endPoints = {
+    nowPlaying: "/now_playing",
+    popular: "/popular",
+    topRated: "/top_rated",
+    upcoming: "/upcoming"
+};
 
-//Get the buttons via their id's
-const nowPlaying = document.getElementById("navNowPlaying");
-const popular = document.getElementById("navPopular");
-const topRated = document.getElementById("navTopRated");
-const upcoming = document.getElementById("navUpcoming");
+// Loops through the nav and grabs each of them
+// When clicked it listens to what endpoint it has, 
+// and fetch the data with that endpoint that matches the id
+// if it doesnt match, there will be an error message
+document.querySelectorAll("ul > li > a").forEach(link => {
+    link.addEventListener("click", (e) => {
+        e.preventDefault();
+    //Grabs the endpoint that matches the id of the link in html
+        const endPoint = endPoints[link.id];
+        if (endPoint) {
+            fetchData(endPoint)
+        } else {
+            console.error("No valid endpoint")
+        }
+    });
+});
 
 // The function fetchdata, where we grab the endpoint, and later can replace it depending on the id that is clicked
 function fetchData(endPoint) {
-fetch(`${baseUrl}${endPoint}?language=en-US&page=1`, options)
-    .then(response => response.json())
+    fetch(`${baseUrl}${endPoint}?language=en-US&page=1`, options)
+    .then(response => {
+        // Looks after error status codes
+        if (response.ok) {
+            return response.json()
+        }
+        else {
+            return {
+                error: true,
+                message: `Error: ${response.status} - ${response.statusText}`
+            };
+        }
+    })
     .then(response => {
         console.log(`Data from ${endPoint}`,response);
         displayMovies(response.results);
@@ -49,28 +73,26 @@ function displayMovies(movies) {
                 </div>
                 <section class="movieText">
                     <p>${movie.overview}</p>
-                    <div>
+                    <section>
                         <header>
                             <h3>Original Title: </h3>
                         </header>
                         <p>${movie.original_title}</p>
-                    </div>
-                    <div>
+                    </section>
+                    <section>
                         <header>
                             <h3>Release Date: </h3>
                         </header>
                         <p>${movie.release_date}</p>
-                    </div>
+                    </section>
             </section>
         `;
-        // Creates an article in the section
-        movieTemplateSection.appendChild(movieFilm);
-    })
-}
-// When the nav is clicked, the fetchdata function is sat till the one with the id that matches
-nowPlaying.addEventListener("click", (e) => {e.preventDefault(); fetchData("/now_playing")});
-popular.addEventListener("click", (e) => {e.preventDefault(); fetchData("/popular")});
-topRated.addEventListener("click", (e) => {e.preventDefault(); fetchData("/top_rated")});
-upcoming.addEventListener("click", (e) => {e.preventDefault(); fetchData("/upcoming")});
+        // Create a section where the movies is appended into
+        const movieSectionItem = document.createElement("section");
+        movieSectionItem.append(movieFilm);
+        // Append happens only one time
+        movieTemplateSection.append(movieSectionItem);
+    });
+};
 // As default set the page till now playing when window loaded
 fetchData("/now_playing");
