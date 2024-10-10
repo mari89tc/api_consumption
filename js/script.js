@@ -60,6 +60,8 @@ function displayMovies(movies) {
     const movieTemplateSection = document.querySelector("#movieTemplate");
     //Makes sure that it is empty
     movieTemplateSection.innerHTML = "";
+    // Create a single container for all movies
+    const movieSectionItem = document.createElement("section");
     // Loops through each movie
     movies.forEach(movie => {
         const movieFilm = document.createElement("article");
@@ -87,12 +89,14 @@ function displayMovies(movies) {
                     </section>
             </section>
         `;
-        // Create a section where the movies is appended into
-        const movieSectionItem = document.createElement("section");
-        movieSectionItem.append(movieFilm);
-        // Append happens only one time
-        movieTemplateSection.append(movieSectionItem);
+    
+    // Append each movie directly to the single container
+    movieSectionItem.append(movieFilm);
+    // Append happens only one time
+    // movieTemplateSection.append(movieSectionItem);
     });
+    // Append the container with all movies to the movieTemplateSection
+    movieTemplateSection.append(movieSectionItem);
 };
 // As default set the page till now playing when window loaded
 fetchData("/now_playing");
